@@ -1,9 +1,13 @@
 import processing.core.PApplet;
 
+import java.util.ArrayList;
+
 public class Main extends PApplet {
 
     //The data stored in an instance of this Main class.
     private Spark[] sparks;
+    private ArrayList<ClickedPoint> clickedPoints = new ArrayList<ClickedPoint>();
+    private int counter = 1;
 
     public static void main(String[] args) {
         //You don't need to know what this does
@@ -27,12 +31,16 @@ public class Main extends PApplet {
 
     @Override
     public void draw() {
-        //background(100);
+        background(100);
         for (Spark s : sparks){
             s.display();
         }
         for (Spark s : sparks){
             s.update();
+        }
+
+        for (ClickedPoint c : clickedPoints) {
+            c.display();
         }
     }
 
@@ -41,6 +49,9 @@ public class Main extends PApplet {
         for(Spark s:sparks){
             s.reactToClick(mouseX, mouseY);
         }
+
+        clickedPoints.add(new ClickedPoint(this, mouseX, mouseY, counter));
+        counter++;
     }
 
     private void showBigMessage(String msg) {

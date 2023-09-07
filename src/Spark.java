@@ -22,6 +22,8 @@ public class Spark {
     private int myColour; //there's no real color type, it's just stored as an int
     private final PApplet p5;
 
+    private String shape;
+
     /**
      * Constructor for Spark objects.
      * @param p5 PApplet instance. Provides functions like random and variables like width and mouseX.
@@ -32,6 +34,7 @@ public class Spark {
         this.vel = PVector.random2D().mult(p5.random(0.1f, 2));
         this.size = size;
         this.myColour = colour;
+        this.shape = Utils.pickFromArrayOfStrings(new String[]{"square", "circle"});
     }
 
     public void display() {
@@ -41,14 +44,23 @@ public class Spark {
             p5.stroke(0, 100);
         }
         p5.fill(myColour);
-        p5.circle(pos.x, pos.y, size);
+
+        if (shape.equals("circle")) {
+            p5.circle(pos.x, pos.y, size);
+        } else {
+            p5.square(pos.x, pos.y, size);
+        }
     }
 
     public void update() {
         pos.add(vel);
         final float angleChange = p5.random(-0.2f, 0.2f);
-        vel.rotate(angleChange); //steer left or right.
-        size = PApplet.constrain(size + p5.random(-1, 1), 5, 100);
+        vel.rotate(angleChange); //steer left or right
+        size = PApplet.constrain(size + p5.random(-5, -1), 0, 100);
+
+        if (size < 1) {
+            size = 50;
+        }
     }
 
 
