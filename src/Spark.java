@@ -1,6 +1,8 @@
 import processing.core.PApplet;
 import processing.core.PVector;
 
+import java.util.ArrayList;
+
 /**
  * A Spark object is an object which can move and display itself.  Each spark maintains its own position and velocity.
  */
@@ -24,6 +26,8 @@ public class Spark {
 
     private String shape;
 
+    private ArrayList<Follower> followers = new ArrayList<Follower>();
+
     /**
      * Constructor for Spark objects.
      * @param p5 PApplet instance. Provides functions like random and variables like width and mouseX.
@@ -35,6 +39,10 @@ public class Spark {
         this.size = size;
         this.myColour = colour;
         this.shape = Utils.pickFromArrayOfStrings(new String[]{"square", "circle"});
+
+        followers.add(new Follower(p5, x, y, size/2, colour));
+        followers.add(new Follower(p5, x, y, size/2, colour));
+        followers.add(new Follower(p5, x, y, size/2, colour));
     }
 
     public void display() {
@@ -50,6 +58,10 @@ public class Spark {
         } else {
             p5.square(pos.x, pos.y, size);
         }
+
+        for (Follower f : followers) {
+            f.display();
+        }
     }
 
     public void update() {
@@ -60,6 +72,10 @@ public class Spark {
 
         if (size < 1) {
             size = 50;
+        }
+
+        for (Follower f : followers) {
+            f.update(vel);
         }
     }
 
